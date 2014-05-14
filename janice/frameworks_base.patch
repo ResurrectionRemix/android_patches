@@ -1,0 +1,84 @@
+From de30387b3c32c2a9cf653590c8454bd002bf0dd1 Mon Sep 17 00:00:00 2001
+From: Robert Rozic <rooobertinhooo@gmail.com>
+Date: Mon, 17 Mar 2014 15:53:27 +0100
+Subject: [PATCH] STE Multimedia Fix [4/4]
+
+This fixes "OK Google" hotword on STEriccson hardware
+Thanks to @C457 and @Meticulus
+---
+ core/jni/android_media_AudioRecord.cpp | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/core/jni/android_media_AudioRecord.cpp b/core/jni/android_media_AudioRecord.cpp
+index c9882c4..891432e 100644
+--- a/core/jni/android_media_AudioRecord.cpp
++++ b/core/jni/android_media_AudioRecord.cpp
+@@ -197,9 +197,19 @@ android_media_AudioRecord_setup(JNIEnv *env, jobject thiz, jobject weak_this,
+                 // Java channel masks map directly to the native definition
+         jint audioFormat, jint buffSizeInBytes, jintArray jSession)
+ {
+-    //ALOGV(">> Entering android_media_AudioRecord_setup");
+-    //ALOGV("sampleRate=%d, audioFormat=%d, channel mask=%x, buffSizeInBytes=%d",
+-    //     sampleRateInHertz, audioFormat, channelMask, buffSizeInBytes);
++	//ALOGI(">> Entering android_media_AudioRecord_setup");
++    //ALOGI("sampleRate=%d, audioFormat=%d, channel mask=%x, buffSizeInBytes=%d, source=%d",
++    //     sampleRateInHertz, audioFormat, channelMask, buffSizeInBytes, source);
++#ifdef STE_HARDWARE
++	ALOGI(">> Entering android_media_AudioRecord_setup");
++    ALOGI("sampleRate=%d, audioFormat=%d, channel mask=%x, buffSizeInBytes=%d, source=%d",
++         sampleRateInHertz, audioFormat, channelMask, buffSizeInBytes, source);
++    /* We don't have mic source 1999 so switch to regular mic source 1*/
++    if(source == 1999){
++		source = 1;
++		ALOGI("STE_HARDWARE source switched from 1999 to 1");
++	}
++#endif
+ 
+     if (!audio_is_input_channel(channelMask)) {
+         ALOGE("Error creating AudioRecord: channel mask %#x is not valid.", channelMask);
+-- 
+1.9.1
+
+
+From a61cab784f2560d972a1c30554a697d04993c57b Mon Sep 17 00:00:00 2001
+From: Clark Scheff <clark@cyngn.com>
+Date: Fri, 25 Apr 2014 18:29:54 -0700
+Subject: [PATCH] Reduce memory leaks by removing all views.
+
+Change-Id: I1c7d3647ae0d40aa214108ea22e007e3cb3191b9
+---
+ .../com/android/systemui/statusbar/phone/PhoneStatusBar.java | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index 2bc7440..e110f55 100644
+--- a/packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -3222,6 +3222,7 @@ private static void copyNotifications(ArrayList<Pair<IBinder, StatusBarNotificat
+     private void recreateStatusBar() {
+         mRecreating = true;
+         mStatusBarContainer.removeAllViews();
++        removeAllViews(mStatusBarWindow);
+ 
+         // extract icons from the soon-to-be recreated viewgroup.
+         int nIcons = mStatusIcons.getChildCount();
+@@ -3268,6 +3269,17 @@ private void recreateStatusBar() {
+         mRecreating = false;
+     }
+ 
++    private void removeAllViews(ViewGroup parent) {
++        int N = parent.getChildCount();
++        for (int i = 0; i < N; i++) {
++            View child = parent.getChildAt(i);
++            if (child instanceof ViewGroup) {
++                removeAllViews((ViewGroup) child);
++            }
++        }
++        parent.removeAllViews();
++    }
++
+     /**
+      * Reload some of our resources when the configuration changes.
+      *
+-- 
+1.9.1

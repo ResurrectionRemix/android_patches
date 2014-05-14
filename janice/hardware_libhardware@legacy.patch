@@ -1,0 +1,28 @@
+From 9c2250d32a1eda9afe3b5cefe3306104148aa532 Mon Sep 17 00:00:00 2001
+From: Franco Rapetti <frapeti@gmail.com>
+Date: Sat, 7 Dec 2013 13:03:10 -0300
+Subject: [PATCH] vibrator workaround
+
+---
+ vibrator/Android.mk | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/vibrator/Android.mk b/vibrator/Android.mk
+index 6f7e262..40bb9dc 100644
+--- a/vibrator/Android.mk
++++ b/vibrator/Android.mk
+@@ -1,9 +1,9 @@
+ # Copyright 2006 The Android Open Source Project
+ 
+-LOCAL_SRC_FILES += vibrator/vibrator.c
+-
+ ## Must point to a source file that implements the sendit() function
+ ifneq ($(BOARD_HAS_VIBRATOR_IMPLEMENTATION),)
+     LOCAL_SRC_FILES += $(BOARD_HAS_VIBRATOR_IMPLEMENTATION)
+     LOCAL_CFLAGS += -DUSE_ALTERNATIVE_VIBRATOR
++else
++	LOCAL_SRC_FILES += vibrator/vibrator.c
+ endif
+-- 
+1.9.1
+

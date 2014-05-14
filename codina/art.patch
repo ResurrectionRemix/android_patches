@@ -1,0 +1,68 @@
+From fc2ac71d0d9e147c607bff9371fe2ef25d8470af Mon Sep 17 00:00:00 2001
+From: Kevin Cernekee <cernekee@gmail.com>
+Date: Mon, 18 Nov 2013 17:19:56 -0800
+Subject: [PATCH] verifier: Bypass monitor-{enter,exit} depth checks
+
+Per Google Bug 61916[1], the monitor-enter and monitor-exit checks in
+dex2oat are excessively strict and will reject some valid APKs, such as
+WhatsApp[2].  This change attempts to relax those requirements.
+
+[1] https://code.google.com/p/android/issues/detail?id=61916
+[2] http://forum.xda-developers.com/showthread.php?t=2525044
+
+Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+---
+ runtime/verifier/register_line.cc | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/runtime/verifier/register_line.cc b/runtime/verifier/register_line.cc
+index a615cc1..f778d00 100644
+--- a/runtime/verifier/register_line.cc
++++ b/runtime/verifier/register_line.cc
+@@ -412,6 +412,7 @@ void RegisterLine::CheckLiteralOp(const Instruction* inst,
+ }
+ 
+ void RegisterLine::PushMonitor(uint32_t reg_idx, int32_t insn_idx) {
++#if 0
+   const RegType& reg_type = GetRegisterType(reg_idx);
+   if (!reg_type.IsReferenceTypes()) {
+     verifier_->Fail(VERIFY_ERROR_BAD_CLASS_HARD) << "monitor-enter on non-object (" << reg_type << ")";
+@@ -421,9 +422,11 @@ void RegisterLine::PushMonitor(uint32_t reg_idx, int32_t insn_idx) {
+     SetRegToLockDepth(reg_idx, monitors_.size());
+     monitors_.push_back(insn_idx);
+   }
++#endif
+ }
+ 
+ void RegisterLine::PopMonitor(uint32_t reg_idx) {
++#if 0
+   const RegType& reg_type = GetRegisterType(reg_idx);
+   if (!reg_type.IsReferenceTypes()) {
+     verifier_->Fail(VERIFY_ERROR_BAD_CLASS_HARD) << "monitor-exit on non-object (" << reg_type << ")";
+@@ -443,6 +446,7 @@ void RegisterLine::PopMonitor(uint32_t reg_idx) {
+       ClearRegToLockDepth(reg_idx, monitors_.size());
+     }
+   }
++#endif
+ }
+ 
+ bool RegisterLine::VerifyMonitorStackEmpty() const {
+@@ -467,6 +471,7 @@ bool RegisterLine::MergeRegisters(const RegisterLine* incoming_line) {
+       line_[idx] = new_type.GetId();
+     }
+   }
++#if 0
+   if (monitors_.size() != incoming_line->monitors_.size()) {
+     verifier_->Fail(VERIFY_ERROR_BAD_CLASS_HARD) << "mismatched stack depths (depth="
+         << MonitorStackDepth() << ", incoming depth=" << incoming_line->MonitorStackDepth() << ")";
+@@ -485,6 +490,7 @@ bool RegisterLine::MergeRegisters(const RegisterLine* incoming_line) {
+       }
+     }
+   }
++#endif
+   return changed;
+ }
+ 
+-- 
+1.9.1
+

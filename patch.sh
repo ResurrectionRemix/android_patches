@@ -32,11 +32,10 @@ normal='tput sgr0'
 top_path="$( cd .. && pwd )"
 devices_list=(*/ "EXIT")
 
-echo -e "${bldgrn}  #### Device list ####"
-echo ""
-
 
 # Device list
+echo -e "${bldgrn}  #### Device list ####"
+echo ""
 i=1
 for device in "${devices_list[@]}";do
     echo -e "${bldblu}  $i. $(echo $device | cut -d / -f 1)"
@@ -60,7 +59,6 @@ if [ $device == "EXIT" ];then
     echo "${bldgrn}  Bye!"
     echo ""
     echo ""
-    return 0
 fi
 
 
@@ -112,6 +110,7 @@ if [ $option == "n" ];then
     echo -e ""
 else
     # Reverting patches
+	clear
     ./revert.sh $device
     cd $top_path
     echo -e ""

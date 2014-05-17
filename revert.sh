@@ -11,6 +11,7 @@ if [ $# == 1 ];then
     device=$1
 else
     # Device list
+    devices_list=(*/ "EXIT")
     echo -e "${bldgrn}  #### Device list ####"
     echo ""
     i=1

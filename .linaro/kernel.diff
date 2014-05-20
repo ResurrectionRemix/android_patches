@@ -1,0 +1,13 @@
+diff --git a/core/tasks/kernel.mk b/core/tasks/kernel.mk
+index b09e5d1..69fcb23 100644
+--- a/core/tasks/kernel.mk
++++ b/core/tasks/kernel.mk
+@@ -148,7 +148,7 @@ ifeq ($(TARGET_ARCH),arm)
+             ARM_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ANDROID_BUILD_TOP)/prebuilt/linux-x86/toolchain/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)/bin/arm-eabi-"
+         endif
+     else
+-        ARM_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ARM_EABI_TOOLCHAIN)/arm-eabi-"
++        ARM_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ANDROID_BUILD_TOP)/prebuilts/gcc/linux-x86/arm/linaro-4.7.4/bin/arm-eabi-"
+     endif
+     ccache = 
+ endif

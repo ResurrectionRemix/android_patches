@@ -51,7 +51,7 @@ clear
 # Reverting patches
 echo -e ""
 echo -e ""
-echo -e "${bldgrn}  #### Reverting patches for $device ####"
+echo -e "${bldgrn}  #### Reverting patches for $(echo $device | cut -d / -f 1) ####"
 echo -e ""
 for patch in "${patches[@]}";do
     patch_dest="$(echo $patch | cut -d. -f1 | sed 's:_:/:g' | sed 's/@/_/g')"

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # No scrollback buffer
 echo -e '\0033\0143'

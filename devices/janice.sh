@@ -1,15 +1,5 @@
 #!/bin/bash
 
-repo="build"
-echo -e "${bldblu}  Patching $repo .."
-cd $top_path/$repo
-$normal
-git fetch https://github.com/PandaMod/android_build.git cm-11.0
-git cherry-pick 2e914b2faa57a62c71a77f1f10ff9655b8f7bac4
-
-echo ""
-echo ""
-
 repo="frameworks/av"
 echo -e "${bldblu}  Patching $repo .."
 cd $top_path/$repo

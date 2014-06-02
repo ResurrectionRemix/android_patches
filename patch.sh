@@ -13,8 +13,9 @@ normal='tput sgr0'
 
 
 # Initialize
-top_path="$( cd .. && pwd )"
-cd devices
+patches_path="$(cd `dirname ${BASH_SOURCE[0]}`; pwd)"
+top_path="$(dirname $patches_path)"
+cd "$patches_path/devices"
 devices_list=(*.sh "EXIT")
 
 

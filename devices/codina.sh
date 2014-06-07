@@ -4,8 +4,8 @@ repo="frameworks/av"
 echo -e "${bldblu}  Patching $repo .."
 cd $top_path/$repo
 $normal
-git fetch https://github.com/TeamCanjica/android_frameworks_av cm-11.0
-git cherry-pick 5c4dd9cc832f47017df8930d77e2d175744af3eb
+git fetch https://github.com/t4n017/android_frameworks_av.git rr
+git cherry-pick cb2bed02548e460e24de7d3247ca759f3cffdd76
 
 echo ""
 echo ""
@@ -14,8 +14,8 @@ repo="frameworks/base"
 echo -e "${bldblu}  Patching $repo .."
 cd $top_path/$repo
 $normal
-git fetch https://github.com/TeamCanjica/android_frameworks_base cm-11.0
-git cherry-pick de30387b3c32c2a9cf653590c8454bd002bf0dd1
+git fetch https://github.com/t4n017/android_frameworks_base.git rr
+git cherry-pick 92a90601b9521787d56690ecefe195b550ef2910
 
 echo ""
 echo ""
@@ -24,20 +24,10 @@ repo="frameworks/native"
 echo -e "${bldblu}  Patching $repo .."
 cd $top_path/$repo
 $normal
-git fetch https://github.com/TeamCanjica/android_frameworks_native cm-11.0
-git cherry-pick 213b1afc3177f483598e23b9d09738d29c8129cb
-git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_native refs/changes/11/59311/1
-git cherry-pick FETCH_HEAD
+git fetch https://github.com/t4n017/android_frameworks_native.git rr
+git cherry-pick e0e18d96f442e6cc8e5be183085ea1249f258cd0
+git cherry-pick 2702188486925b2927e7d86be6b11e12bcc569e0
 
-echo ""
-echo ""
-
-repo="hardware/libhardware_legacy"
-echo -e "${bldblu}  Patching $repo .."
-cd $top_path/$repo
-$normal
-git fetch https://github.com/TeamCanjica/android_hardware_libhardware_legacy cm-11.0
-git cherry-pick 9c2250d32a1eda9afe3b5cefe3306104148aa532
 
 echo ""
 echo ""
@@ -46,8 +36,8 @@ repo="packages/services/Telephony"
 echo -e "${bldblu}  Patching $repo .."
 cd $top_path/$repo
 $normal
-git fetch https://github.com/TeamCanjica/android_packages_services_Telephony cm-11.0
-git cherry-pick fdf281fdabe5e7517eb96f2faf159bbcc74ae4a6
+git fetch https://github.com/t4n017/android_packages_services_Telephony.git rr
+git cherry-pick 14ac9ccb3d6fc1bcc9ed1b7ec06dfb61e340e9ec
 
 echo ""
 echo ""
@@ -56,9 +46,9 @@ repo="system/core"
 echo -e "${bldblu}  Patching $repo .."
 cd $top_path/$repo
 $normal
-git fetch https://github.com/TeamCanjica/android_system_core cm-11.0
-git cherry-pick 02f79390ff2d6a0e173d1dd8bfae02844d4c33a6
-git cherry-pick 910ccc43a23b042df3df12ed1bbbe32954749e59
+git fetch https://github.com/t4n017/android_system_core.git rr
+git cherry-pick 9e22f426fd9bb345ec0a9f63e7859227d7f109eb
+git cherry-pick e17ae0dd288f0ad306c00fe39e013a33ce9dce57
 
 echo ""
 echo ""
@@ -67,5 +57,5 @@ repo="system/vold"
 echo -e "${bldblu}  Patching $repo .."
 cd $top_path/$repo
 $normal
-git fetch https://github.com/t4n017/android_system_vold.git kitkat
-git cherry-pick 3af7b597586ee571d0448026050fcbfcc177f3b0
+git fetch https://github.com/t4n017/android_system_vold.git rr
+git cherry-pick e27517a7cfc3dc09247e838b4b5e7d41970c50d9
